@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import LogoImg from "../../../assets/logo.png";
 import {
   StyledAppBar,
   StyledLogo,
@@ -5,9 +8,6 @@ import {
   StyledTabs,
   StyledToolBar,
 } from "./navigation.style";
-import LogoImg from "../../../assets/logo.png";
-import { useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const Navigation = () => {
   const [tabVal, setTabVal] = useState(0);

@@ -23,7 +23,29 @@ li,
 a {
   text-decoration: none;
 }
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #e7be05;
+  border-radius: 15px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 body {
   font-family: "Roboto", sans-serif;
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

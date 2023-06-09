@@ -22,7 +22,7 @@ export const StyledTab = styled(Tab)`
   font-size: clamp(0.6rem, 5vw, 1.1rem);
   transition: color 0.3s ease;
 
-  &:hover {
+  :hover {
     color: #ffd93d;
   }
 `;
