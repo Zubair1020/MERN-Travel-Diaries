@@ -46,7 +46,7 @@ const DairyItem = ({ post }) => {
         component="img"
         height="250"
         image={image}
-        alt={title}
+        alt={location}
       />
       <CardContent>
         <Typography variant="h5">{title}</Typography>
