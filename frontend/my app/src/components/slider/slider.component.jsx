@@ -15,7 +15,7 @@ export default function Slider() {
   };
 
   useEffect(() => {
-    const interval = setInterval(handleSlide, 6000);
+    const interval = setInterval(handleSlide, 5000);
     return () => clearInterval(interval);
   }, []);
 

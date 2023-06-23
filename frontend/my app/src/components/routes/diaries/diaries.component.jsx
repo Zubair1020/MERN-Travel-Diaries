@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPosts } from "../../../redux-store/posts/posts.selector";
+import { getPosts } from "../../../utils/crud-api-call.utils";
+
 import { CardContainer } from "./diaries.style";
 import DairyItem from "../../dairy-item/dairy-item.component";
-import { getPosts } from "../../../utils/crud-api-call.utill";
 
 const Diaries = () => {
-  const [postsData, setPostsData] = useState(null);
+  const dispatch = useDispatch();
+  const posts = useSelector(selectPosts);
 
   useEffect(() => {
-    getPosts(setPostsData);
+    getPosts(dispatch);
   }, []);
 
   return (
     <>
       <CardContainer>
-        {postsData &&
-          postsData.posts.map((post) => (
+        {posts &&
+          posts.map((post) => (
             <DairyItem
               key={post._id}
               post={post}

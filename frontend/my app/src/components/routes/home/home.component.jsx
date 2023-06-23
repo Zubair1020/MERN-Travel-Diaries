@@ -2,12 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { ButtonBox, Hero } from "./home.style";
 import { Button, Typography } from "@mui/material";
 import Slider from "../../slider/slider.component";
+import { useDispatch, useSelector } from "react-redux";
+import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
+import { selectIsLoggedIn } from "../../../redux-store/auth/auth.selectors";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  const handelClick = () => {
-    navigate(`/diaries`);
+  const handelClick = (path, value) => {
+    navigate(`/${path}`);
+    dispatch(setTabValue(value));
   };
   return (
     <header>
@@ -27,13 +33,16 @@ const Home = () => {
           <Button
             size="large"
             variant="outlined"
+            onClick={() =>
+              isLoggedIn ? handelClick("add", 2) : handelClick("auth", 2)
+            }
           >
             SHARE YOUR STORY
           </Button>
           <Button
             size="large"
             variant="contained"
-            onClick={handelClick}
+            onClick={() => handelClick("diaries", 1)}
           >
             VIEW DIARIES
           </Button>

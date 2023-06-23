@@ -1,5 +1,5 @@
-import User from "../models/User";
 import { hashSync, compareSync } from "bcryptjs";
+import User from "../models/User";
 
 export const getAllUsers = async (req, res) => {
   let users;
@@ -15,7 +15,7 @@ export const getAllUsers = async (req, res) => {
   return res.status(200).json({ users });
 };
 
-export const signUp = async (req, res, next) => {
+export const signUp = async (req, res) => {
   const { name, email, password } = req.body;
   if (
     !name &&
@@ -33,15 +33,25 @@ export const signUp = async (req, res, next) => {
   try {
     users = new User({ name, email, password: hashedPassword });
     await users.save();
-  } catch (err) {
-    return console.error(err);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    if (
+      error.code === 11000 &&
+      error.keyPattern &&
+      error.keyValue &&
+      error.keyValue.email
+    ) {
+      const duplicateEmailError = `Email '${error.keyValue.email}' is already registered.`;
+      return res.status(409).json({ error: duplicateEmailError });
+    }
+    return res.status(500).json({ error: "An error occurred" });
   }
 
   if (!users) {
     return res.status(500).json({ ErrorMassage: "Unexpected Error Occurred" });
   }
 
-  return res.status(201).json({ users });
+  return res.status(201).json({ massage: "User created successfully ", users });
 };
 
 export const login = async (req, res, next) => {
@@ -53,8 +63,8 @@ export const login = async (req, res, next) => {
   let existingUser;
   try {
     existingUser = await User.findOne({ email });
-  } catch (err) {
-    return console.error(err);
+  } catch (error) {
+    return res.status(500).json({ ErrorMassage: "Email is not registered" });
   }
   if (!existingUser) {
     return res.status(500).json({ ErrorMassage: "No user found" });

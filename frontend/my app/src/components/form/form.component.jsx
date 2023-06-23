@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsSignedUp } from "../../redux-store/auth/auth.actions";
+import { selectIsSignedUp } from "../../redux-store/auth/auth.selectors";
+
 import { Button, Typography, InputLabel } from "@mui/material";
 import { StyledBox, StyledForm, StyledTextField } from "./form.style";
-import { useState } from "react";
 
 const Form = ({ onSubmit }) => {
   const {
@@ -11,20 +14,22 @@ const Form = ({ onSubmit }) => {
     reset,
   } = useForm();
 
-  const [isSignUp, setIsSignUp] = useState(true);
+  const dispatch = useDispatch();
+
+  const isSignedUp = useSelector(selectIsSignedUp);
 
   return (
     <>
       <StyledBox>
-        <Typography variant="h3">{!isSignUp ? "Login" : "Sign Up"}</Typography>
+        <Typography variant="h3">{isSignedUp ? "Login" : "Sign Up"}</Typography>
 
         <StyledForm
-          onSubmit={handleSubmit((data) => onSubmit(data, reset, isSignUp))}
+          onSubmit={handleSubmit((data) => onSubmit(data, reset, isSignedUp))}
         >
-          {isSignUp && (
+          {!isSignedUp && (
             <>
               <InputLabel
-                error={Boolean(errors.name)}
+                error={!!errors.name}
                 htmlFor="name"
               >
                 Name
@@ -32,10 +37,8 @@ const Form = ({ onSubmit }) => {
               <StyledTextField
                 type="text"
                 id="name"
-                error={Boolean(errors.name)}
-                helperText={
-                  Boolean(errors.name) && <span>{errors.name.message}</span>
-                }
+                error={!!errors.name}
+                helperText={!!errors.name && <span>{errors.name.message}</span>}
                 {...register("name", {
                   required: "Name is required",
                   minLength: {
@@ -52,7 +55,7 @@ const Form = ({ onSubmit }) => {
           )}
 
           <InputLabel
-            error={Boolean(errors.email)}
+            error={!!errors.email}
             htmlFor="email"
           >
             Email
@@ -60,10 +63,8 @@ const Form = ({ onSubmit }) => {
           <StyledTextField
             type="email"
             id="email"
-            error={Boolean(errors.email)}
-            helperText={
-              Boolean(errors.email) && <span>{errors.email.message}</span>
-            }
+            error={!!errors.email}
+            helperText={!!errors.email && <span>{errors.email.message}</span>}
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -74,7 +75,7 @@ const Form = ({ onSubmit }) => {
           />
 
           <InputLabel
-            error={Boolean(errors.password)}
+            error={!!errors.password}
             htmlFor="password"
           >
             Password
@@ -82,9 +83,9 @@ const Form = ({ onSubmit }) => {
           <StyledTextField
             type="password"
             id="password"
-            error={Boolean(errors.password)}
+            error={!!errors.password}
             helperText={
-              Boolean(errors.password) && <span>{errors.password.message}</span>
+              !!errors.password && <span>{errors.password.message}</span>
             }
             {...register("password", {
               required: "Password is required",
@@ -103,19 +104,23 @@ const Form = ({ onSubmit }) => {
             variant="contained"
             size="large"
             type="submit"
-            disabled={Boolean(
-              (isSignUp && errors.name) || errors.email || errors.password
-            )}
+            disabled={
+              !!(
+                (!isSignedUp && errors.name) ||
+                errors.email ||
+                errors.password
+              )
+            }
           >
-            {!isSignUp ? "login" : "sign up"}
+            {isSignedUp ? "login" : "sign up"}
           </Button>
 
           <Button
             variant="outlined"
             size="large"
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={() => dispatch(setIsSignedUp(!isSignedUp))}
           >
-            change to {!isSignUp ? "Login" : "Sign Up"}
+            change to {!isSignedUp ? "Login" : "Sign Up"}
           </Button>
         </StyledForm>
       </StyledBox>

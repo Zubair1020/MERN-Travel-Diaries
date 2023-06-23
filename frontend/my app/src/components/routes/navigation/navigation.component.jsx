@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { selectIsLoggedIn } from "../../../redux-store/auth/auth.selectors";
+
 import LogoImg from "../../../assets/logo.png";
 import {
   StyledAppBar,
@@ -8,13 +10,18 @@ import {
   StyledTabs,
   StyledToolBar,
 } from "./navigation.style";
+import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
+import { selectTabValue } from "../../../redux-store/user-interaction/userInteraction.selector";
 
 const Navigation = () => {
-  const [tabVal, setTabVal] = useState(0);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const tabValue = useSelector(selectTabValue);
 
-  const handelClick = (path) => {
+  const handelClick = (path, value) => {
     navigate(`/${path}`);
+    dispatch(setTabValue(value));
   };
 
   return (
@@ -25,31 +32,50 @@ const Navigation = () => {
             <StyledLogo
               src={LogoImg}
               alt="Logo"
+              onClick={() => {
+                dispatch(setTabValue(0));
+              }}
             />
           </Link>
 
           <StyledTabs
-            value={tabVal}
+            value={tabValue} // Update this line
             onChange={(e, val) => {
-              setTabVal(val);
+              dispatch(setTabValue(val));
               e.preventDefault();
             }}
           >
             <StyledTab
               value={0}
               label="Home"
-              onClick={() => handelClick("")}
+              onClick={() => handelClick("", 0)}
             />
             <StyledTab
               value={1}
               label="Diaries"
-              onClick={() => handelClick("diaries")}
+              onClick={() => handelClick("diaries", 1)}
             />
-            <StyledTab
-              value={2}
-              label="Auth"
-              onClick={() => handelClick("auth")}
-            />
+            {!isLoggedIn && (
+              <StyledTab
+                value={2}
+                label="Auth"
+                onClick={() => handelClick("auth", 2)}
+              />
+            )}
+            {isLoggedIn && (
+              <StyledTab
+                value={2}
+                label="Add"
+                onClick={() => handelClick("add", 2)}
+              />
+            )}
+            {isLoggedIn && (
+              <StyledTab
+                value={3}
+                label="Profile"
+                onClick={() => handelClick("profile", 3)}
+              />
+            )}
           </StyledTabs>
         </StyledToolBar>
       </StyledAppBar>

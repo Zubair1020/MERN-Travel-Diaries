@@ -11,8 +11,12 @@ import {
 } from "@mui/material";
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
 
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux-store/auth/auth.selectors";
+
 const DairyItem = ({ post }) => {
   const { title, description, image, location, date } = post;
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -57,14 +61,16 @@ const DairyItem = ({ post }) => {
           {description}
         </Typography>
       </CardContent>
-      <StyledCardActions style={{ textAlign: "right" }}>
-        <IconButton className="editButton">
-          <ModeEditOutlineIcon />
-        </IconButton>
-        <IconButton className="deleteButton">
-          <DeleteIcon />
-        </IconButton>
-      </StyledCardActions>
+      {isLoggedIn && (
+        <StyledCardActions style={{ textAlign: "right" }}>
+          <IconButton className="editButton">
+            <ModeEditOutlineIcon />
+          </IconButton>
+          <IconButton className="deleteButton">
+            <DeleteIcon />
+          </IconButton>
+        </StyledCardActions>
+      )}
     </StyledCard>
   );
 };
