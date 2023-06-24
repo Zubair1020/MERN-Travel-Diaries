@@ -10,14 +10,27 @@ import { StyledContainer } from "./auth.style";
 import ErrorModal from "../../error-modal/error-modal.component";
 import { setCurrentUser } from "../../../redux-store/user/user.action";
 import { useNavigate } from "react-router-dom";
+import {
+  setAuthError,
+  setIsLoggedIn,
+} from "../../../redux-store/auth/auth.actions";
 
 const Auth = () => {
   const isSignedUp = useSelector(selectIsSignedUp);
   const authError = useSelector(selectAuthError);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onSubmit = (data, reset) => {
-    setAuthRequest(data, isSignedUp, dispatch, setCurrentUser, reset, navigate);
+
+  const onSubmit = async (data, reset) => {
+    const resData = await setAuthRequest(data, isSignedUp, dispatch);
+    console.log(resData);
+    dispatch(setIsLoggedIn(true));
+    dispatch(setAuthError(null));
+    !isSignedUp
+      ? dispatch(setCurrentUser(resData.users._id))
+      : dispatch(setCurrentUser(resData.id));
+    reset();
+    navigate("/add");
   };
 
   return (
