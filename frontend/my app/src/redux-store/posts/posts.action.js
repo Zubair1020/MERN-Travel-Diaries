@@ -18,5 +18,6 @@ export const fetchPostsAsync = () => async (dispatch) => {
     dispatch(fetchPostsSuccess(data.posts));
   } catch (error) {
     dispatch(fetchPostsFailed(error));
+    throw `Error during fetching posts : ${error}`;
   }
 };

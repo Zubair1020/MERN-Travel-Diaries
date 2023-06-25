@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsSignedUp } from "../../redux-store/auth/auth.actions";
-import { selectIsSignedUp } from "../../redux-store/auth/auth.selectors";
 
 import { Button, Typography, InputLabel } from "@mui/material";
 import { StyledBox, StyledForm, StyledTextField } from "./form.style";
+import { selectIsSignedUp } from "../../redux-store/user-interaction/userInteraction.selector";
+import { setIsSignedUp } from "../../redux-store/user-interaction/userInteraction.action";
 
 const Form = ({ onSubmit }) => {
   const {

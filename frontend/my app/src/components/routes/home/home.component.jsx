@@ -4,7 +4,7 @@ import { Button, Typography } from "@mui/material";
 import Slider from "../../slider/slider.component";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
-import { selectIsLoggedIn } from "../../../redux-store/auth/auth.selectors";
+import { selectIsLoggedIn } from "../../../redux-store/user/user.selector";
 
 const Home = () => {
   const dispatch = useDispatch();

@@ -1,42 +1,44 @@
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { selectIsSignedUp } from "../../../redux-store/user-interaction/userInteraction.selector";
 import {
-  selectIsSignedUp,
-  selectAuthError,
-} from "../../../redux-store/auth/auth.selectors";
-import { setAuthRequest } from "../../../utils/crud-api-call.utils";
+  setCurrentUserAsync,
+  setCurrentUserFailed,
+} from "../../../redux-store/user/user.action";
+import {
+  selectCurrentUserError,
+  selectCurrentUserIsLoading,
+} from "../../../redux-store/user/user.selector";
 
 import Form from "../../form/form.component";
-import { StyledContainer } from "./auth.style";
 import ErrorModal from "../../error-modal/error-modal.component";
-import { setCurrentUser } from "../../../redux-store/user/user.action";
-import { useNavigate } from "react-router-dom";
-import {
-  setAuthError,
-  setIsLoggedIn,
-} from "../../../redux-store/auth/auth.actions";
+import Spinner from "../../spinner/spinner.component";
+import { StyledContainer } from "./auth.style";
 
 const Auth = () => {
   const isSignedUp = useSelector(selectIsSignedUp);
-  const authError = useSelector(selectAuthError);
+  const currentUserError = useSelector(selectCurrentUserError);
+  const currentUserLoading = useSelector(selectCurrentUserIsLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = async (data, reset) => {
-    const resData = await setAuthRequest(data, isSignedUp, dispatch);
-    console.log(resData);
-    dispatch(setIsLoggedIn(true));
-    dispatch(setAuthError(null));
-    !isSignedUp
-      ? dispatch(setCurrentUser(resData.users._id))
-      : dispatch(setCurrentUser(resData.id));
-    reset();
-    navigate("/add");
+  const onSubmit = (data, reset) => {
+    dispatch(setCurrentUserAsync(data, isSignedUp, navigate, reset));
   };
 
   return (
     <StyledContainer>
+      {currentUserLoading ? (
+        <Spinner />
+      ) : (
+        currentUserError && (
+          <ErrorModal
+            errorMessage={currentUserError.message}
+            resetError={setCurrentUserFailed}
+          />
+        )
+      )}
       <Form onSubmit={onSubmit} />
-      {authError ? <ErrorModal authError={authError} /> : null}
     </StyledContainer>
   );
 };

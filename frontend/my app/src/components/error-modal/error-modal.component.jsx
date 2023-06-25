@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
-import { setAuthError } from "../../redux-store/auth/auth.actions";
 import { Box } from "@mui/material";
 
-const ErrorModal = ({ authError }) => {
-  const [open, setOpen] = useState(!!authError);
+const ErrorModal = ({ errorMessage, resetError }) => {
+  const [open, setOpen] = useState(!!errorMessage);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setOpen(!!authError);
-  }, [authError]);
+    setOpen(!!errorMessage);
+  }, [errorMessage]);
 
   const style = {
     position: "'absolute' as 'absolute'",
@@ -28,7 +27,7 @@ const ErrorModal = ({ authError }) => {
       keepMounted
       open={open}
       onClose={() => {
-        dispatch(setAuthError(null));
+        dispatch(resetError(null));
       }}
       aria-labelledby="error-modal-title"
       aria-describedby="error-modal-description"
@@ -47,7 +46,7 @@ const ErrorModal = ({ authError }) => {
           id="error-modal-description"
           sx={{ mt: 2 }}
         >
-          {authError}
+          {errorMessage}
         </Typography>
       </Box>
     </Modal>

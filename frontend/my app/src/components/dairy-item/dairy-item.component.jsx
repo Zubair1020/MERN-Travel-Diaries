@@ -12,7 +12,7 @@ import {
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
 
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux-store/auth/auth.selectors";
+import { selectIsLoggedIn } from "../../redux-store/user/user.selector";
 
 const DairyItem = ({ post }) => {
   const { title, description, image, location, date } = post;

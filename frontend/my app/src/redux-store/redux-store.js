@@ -15,7 +15,7 @@ const composedEnhancers = compose(applyMiddleware(...middleWare));
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "userInteraction", "user"],
+  whitelist: ["user", "userInteraction"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

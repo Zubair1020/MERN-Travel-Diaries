@@ -6,7 +6,7 @@ import Navigation from "./components/routes/navigation/navigation.component";
 import Add from "./components/routes/add/add.component";
 import Profile from "./components/routes/profile/profile.component";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "./redux-store/auth/auth.selectors";
+import { selectIsLoggedIn } from "./redux-store/user/user.selector";
 
 const App = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);

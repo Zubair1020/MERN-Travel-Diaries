@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { selectIsLoggedIn } from "../../../redux-store/auth/auth.selectors";
 
 import LogoImg from "../../../assets/logo.png";
 import {
@@ -12,6 +11,7 @@ import {
 } from "./navigation.style";
 import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
 import { selectTabValue } from "../../../redux-store/user-interaction/userInteraction.selector";
+import { selectIsLoggedIn } from "../../../redux-store/user/user.selector";
 
 const Navigation = () => {
   const dispatch = useDispatch();
