@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 
 const ErrorModal = ({ errorMessage, resetError }) => {

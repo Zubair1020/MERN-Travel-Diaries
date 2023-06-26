@@ -18,31 +18,89 @@ export const getAllPosts = async (req, res) => {
   return res.status(200).json({ posts });
 };
 
+// export const addPost = async (req, res) => {
+//   const { title, description, location, date, image, user } = req.body;
+
+//   if (
+//     (!title &&
+//       title.trim() == "" &&
+//       !description &&
+//       description.trim() &&
+//       !location &&
+//       location.trim() == "" &&
+//       !date) ||
+//     is(Date.parse(date)) ||
+//     (!image && image.trim() == "" && !user)
+//   ) {
+//     return res.status(422).json({ ErrorMassage: "Invalided Data" });
+//   }
+
+//   let existingUser;
+//   try {
+//     existingUser = await User.findById(user);
+//   } catch (err) {
+//     return console.error(err);
+//   }
+//   if (!user) return res.status(404).json({ ErrorMassage: "User not found" });
+
+//   let post;
+//   try {
+//     post = new Post({
+//       title,
+//       description,
+//       location,
+//       date: new Date(`${date}`),
+//       image,
+//       user,
+//     });
+
+//     const session = await mongoose.startSession();
+//     session.startTransaction();
+//     existingUser.posts.push(post);
+//     await existingUser.save({ session });
+//     await post.save({ session });
+//     session.commitTransaction();
+//     //
+//   } catch (err) {
+//     return console.error(err);
+//   }
+
+//   if (!post)
+//     return res.status(500).json({ ErrorMassage: "Unexpected Error Occurred" });
+
+//   return res.status(200).json({ Message: "Successfully posted", post });
+// };
+
 export const addPost = async (req, res) => {
   const { title, description, location, date, image, user } = req.body;
 
   if (
-    !title &&
-    title.trim() == "" &&
-    !description &&
-    description.trim() &&
-    !location &&
-    location.trim() == "" &&
-    !date &&
-    !image &&
-    image.trim() == "" &&
+    !title ||
+    title.trim() === "" ||
+    !description ||
+    description.trim() === "" ||
+    !location ||
+    location.trim() === "" ||
+    !date ||
+    isNaN(Date.parse(date)) ||
+    !image ||
+    image.trim() === "" ||
     !user
   ) {
-    return res.status(422).json({ ErrorMassage: "Invalided Data" });
+    return res.status(422).json({ ErrorMassage: "Invalid Data" });
   }
 
   let existingUser;
   try {
     existingUser = await User.findById(user);
   } catch (err) {
-    return console.error(err);
+    console.error(err);
+    return res.status(500).json({ ErrorMassage: "Internal Server Error" });
   }
-  if (!user) return res.status(404).json({ ErrorMassage: "User not found" });
+
+  if (!existingUser) {
+    return res.status(404).json({ ErrorMassage: "User not found" });
+  }
 
   let post;
   try {
@@ -50,7 +108,7 @@ export const addPost = async (req, res) => {
       title,
       description,
       location,
-      date: new Date(`${date}`),
+      date: new Date(date),
       image,
       user,
     });
@@ -61,15 +119,16 @@ export const addPost = async (req, res) => {
     await existingUser.save({ session });
     await post.save({ session });
     session.commitTransaction();
-    //
   } catch (err) {
-    return console.error(err);
+    console.error(err);
+    return res.status(500).json({ ErrorMassage: "Unexpected Error Occurred" });
   }
 
-  if (!post)
+  if (!post) {
     return res.status(500).json({ ErrorMassage: "Unexpected Error Occurred" });
+  }
 
-  return res.status(200).json({ post });
+  return res.status(200).json({ Message: "Successfully posted", post });
 };
 
 export const getPostById = async (req, res) => {

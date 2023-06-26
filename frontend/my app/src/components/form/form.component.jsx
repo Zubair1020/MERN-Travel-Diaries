@@ -43,7 +43,7 @@ const Form = ({ onSubmit }) => {
                   required: "Name is required",
                   minLength: {
                     value: 3,
-                    message: "Name must be at least 4 characters",
+                    message: "Name must be at least 3 characters",
                   },
                   maxLength: {
                     value: 200,

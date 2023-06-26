@@ -1,3 +1,6 @@
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux-store/user/user.selector";
+
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,9 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
-
-import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux-store/user/user.selector";
 
 const DairyItem = ({ post }) => {
   const { title, description, image, location, date } = post;
