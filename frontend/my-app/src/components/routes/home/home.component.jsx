@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
-
 import { selectIsLoggedIn } from "../../../redux-store/user/user.selector";
+
 import { ButtonBox, Hero } from "./home.style";
 import { Button, Typography } from "@mui/material";
 import Slider from "../../slider/slider.component";

@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
 
-const DairyItem = ({ post }) => {
+const DairyItem = ({ post, name }) => {
   const { title, description, image, location, date, user, _id } = post;
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
@@ -51,7 +51,7 @@ const DairyItem = ({ post }) => {
             aria-label="recipe"
             sx={{ bgcolor: "#FFD93D", color: "black" }}
           >
-            R
+            {name && name.charAt(0)}
           </Avatar>
         }
         action={

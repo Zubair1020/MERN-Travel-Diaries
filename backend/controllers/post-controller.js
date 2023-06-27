@@ -119,7 +119,7 @@ export const updatePostById = async (req, res) => {
       image,
     });
   } catch (err) {
-    return res.json({ err });
+    return res.status(500).json({ err });
   }
 
   if (!post) return res.status(500).json({ ErrorMassage: "Unable to update" });

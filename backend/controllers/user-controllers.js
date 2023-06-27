@@ -15,6 +15,21 @@ export const getAllUsers = async (req, res) => {
   return res.status(200).json({ users });
 };
 
+export const getUserById = async (req, res) => {
+  const id = req.params.id;
+
+  let user;
+  try {
+    user = await User.findById(id);
+  } catch (error) {
+    console.error(error);
+    return res.json({ error });
+  }
+  if (!user) return res.status(404).json({ message: "No user found" });
+
+  return await res.status(200).json({ user });
+};
+
 export const signUp = async (req, res) => {
   const { name, email, password } = req.body;
   if (
@@ -54,7 +69,7 @@ export const signUp = async (req, res) => {
   return res.status(201).json({ massage: "User created successfully ", users });
 };
 
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email && email.trim() && !password && password.length < 6) {
     return res.status(422).json({ ErrorMassage: "Invalid Data" });

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import PostUpdate from "../../post-update/post-update.component";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getPostDetails,
   updatePostById,
 } from "../../../utils/crud-api-call.utils";
+import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
+
 import Spinner from "../../spinner/spinner.component";
 import ErrorModal from "../../error-modal/error-modal.component";
-import { useDispatch } from "react-redux";
-import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
 
 const Update = () => {
   const id = useParams()._id;
@@ -33,11 +34,9 @@ const Update = () => {
   }, []);
 
   const handelSubmit = (data, reset) => {
-    console.log(data);
     setIsLoading(true);
     updatePostById(data, id)
-      .then((resData) => {
-        console.log(resData);
+      .then(() => {
         reset();
         setIsLoading(false);
         navigate("/diaries");
