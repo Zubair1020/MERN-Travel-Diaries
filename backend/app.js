@@ -7,6 +7,7 @@ import cors from "cors";
 
 const app = express();
 dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 // middleware
 app.use(cors());
@@ -19,5 +20,5 @@ mongoose
   .connect(
     `mongodb+srv://emonkhan2233445:${process.env.MONGODB_PASSWORD}@cluster0.fmao7ba.mongodb.net/?retryWrites=true&w=majority`
   )
-  .then(app.listen(3000, () => console.log("App is listening to port 3000")))
+  .then(app.listen(PORT, () => console.log(`App is listening to port ${PORT}`)))
   .catch((err) => console.error(err));
