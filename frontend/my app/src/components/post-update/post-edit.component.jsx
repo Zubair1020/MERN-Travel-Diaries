@@ -6,16 +6,23 @@ import {
   StyledBox,
   StyledForm,
   StyledTextFiled,
-} from "./post-edit.style";
+} from "./post-update.style";
 import travelIcon from "../../assets/travel_icon.svg";
 
-const PostEdit = ({ post, edit, onSubmit }) => {
+const PostUpdate = ({ post, update, onSubmit }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: update && update.title,
+      description: update && update.description,
+      imageUrl: update && update.image,
+      location: update && update.location,
+    },
+  });
 
   const validateDate = (date) => {
     const selectedDate = new Date(date);
@@ -51,6 +58,7 @@ const PostEdit = ({ post, edit, onSubmit }) => {
             alt="Travel Icon"
           />
         </Typography>
+
         <StyledForm onSubmit={handleSubmit((data) => onSubmit(data, reset))}>
           <StyledTextFiled
             label="Title"
@@ -158,4 +166,4 @@ const PostEdit = ({ post, edit, onSubmit }) => {
   );
 };
 
-export default PostEdit;
+export default PostUpdate;

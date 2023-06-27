@@ -7,6 +7,7 @@ export const StyledCard = styled(Card)`
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   width: 100%;
   max-width: 32rem;
+  height: 32rem;
 `;
 
 export const StyledCardActions = styled(CardActions)`

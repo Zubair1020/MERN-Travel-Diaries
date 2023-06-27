@@ -88,3 +88,49 @@ export const addPost = async (
     throw error;
   }
 };
+
+export const getPostDetails = async (id) => {
+  const res = await fetch(`${baseURL}posts/${id}`);
+  if (res.status !== 200) throw new Error("Unable to fetch diary");
+
+  return await res.json();
+};
+
+export const updatePostById = async (data, id) => {
+  const url = `${baseURL}posts/${id}`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: data.title,
+      description: data.description,
+      location: data.location,
+      image: data.imageUrl,
+    }),
+  });
+  if (res.status !== 200) {
+    const errorData = await res.json();
+    throw new Error("Unable to update" + errorData);
+  }
+
+  return await res.json();
+};
+
+export const deletePostById = async (id) => {
+  const url = `${baseURL}posts/${id}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (res.status !== 200) {
+    const errorData = await res.json();
+    throw new Error("Unable to delete: " + errorData.message);
+  }
+
+  return await res.json();
+};

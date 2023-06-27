@@ -8,7 +8,7 @@ import Auth from "./components/routes/auth/auth.component";
 import Navigation from "./components/routes/navigation/navigation.component";
 import Profile from "./components/routes/profile/profile.component";
 import Add from "./components/routes/add/add.component";
-import Edit from "./components/routes/edit/edit.component";
+import Update from "./components/routes/update/update.component";
 
 const App = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -44,8 +44,8 @@ const App = () => {
                 element={<Profile />}
               />
               <Route
-                path="/edit"
-                element={<Edit />}
+                path="/post/:_id"
+                element={<Update />}
               />
             </>
           )}

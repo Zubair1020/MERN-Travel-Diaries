@@ -1,5 +1,8 @@
-import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux-store/user/user.selector";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../redux-store/user/user.selector";
+import { deletePostById } from "../../utils/crud-api-call.utils";
+import { fetchPostsAsync } from "../../redux-store/posts/posts.action";
 
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
@@ -15,8 +18,10 @@ import {
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
 
 const DairyItem = ({ post }) => {
-  const { title, description, image, location, date } = post;
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const { title, description, image, location, date, user, _id } = post;
+  const navigate = useNavigate();
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -25,6 +30,17 @@ const DairyItem = ({ post }) => {
     const year = date.getFullYear();
 
     return `${month},${day},${year}`;
+  };
+
+  const handelClick = (path) => {
+    navigate(path);
+  };
+  const handelDelete = (id) => {
+    deletePostById(id)
+      .then(() => dispatch(fetchPostsAsync()))
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return (
@@ -40,7 +56,7 @@ const DairyItem = ({ post }) => {
         }
         action={
           <IconButton aria-label="settings">
-            <EditLocationAltIcon sx={{ color: "#73A9AD" }} />
+            <EditLocationAltIcon sx={{ color: "gray" }} />
           </IconButton>
         }
         title={location}
@@ -61,12 +77,18 @@ const DairyItem = ({ post }) => {
           {description}
         </Typography>
       </CardContent>
-      {isLoggedIn && (
+      {currentUser === user && (
         <StyledCardActions style={{ textAlign: "right" }}>
-          <IconButton className="editButton">
+          <IconButton
+            className="editButton"
+            onClick={() => handelClick(`/post/${_id}`)}
+          >
             <ModeEditOutlineIcon />
           </IconButton>
-          <IconButton className="deleteButton">
+          <IconButton
+            className="deleteButton"
+            onClick={() => handelDelete(_id)}
+          >
             <DeleteIcon />
           </IconButton>
         </StyledCardActions>

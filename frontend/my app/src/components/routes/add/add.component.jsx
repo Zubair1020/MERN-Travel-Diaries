@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../redux-store/user/user.selector";
 import { addPost } from "../../../utils/crud-api-call.utils";
 
-import PostEdit from "../../post-edit/post-edit.component";
+import PostUpdate from "../../post-update/post-update.component";
 import ErrorModal from "../../error-modal/error-modal.component";
 import Spinner from "../../spinner/spinner.component";
 
@@ -38,7 +38,7 @@ const Add = () => {
           resetError={setError}
         />
       ) : (
-        <PostEdit
+        <PostUpdate
           onSubmit={handelSubmit}
           post
         />
