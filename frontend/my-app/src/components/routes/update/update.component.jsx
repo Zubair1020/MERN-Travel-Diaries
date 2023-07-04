@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import PostUpdate from "../../post-update/post-update.component";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getPostDetails,
-  updatePostById,
-} from "../../../utils/crud-api-call.utils";
 import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
+import {
+  getPostDetailsById,
+  updatePostById,
+} from "../../../utils/firebase.utils";
 
 import Spinner from "../../spinner/spinner.component";
 import ErrorModal from "../../error-modal/error-modal.component";
@@ -21,9 +21,9 @@ const Update = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getPostDetails(id)
-      .then((resData) => {
-        setPost(resData.post);
+    getPostDetailsById(id)
+      .then((post) => {
+        setPost(post);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -33,20 +33,19 @@ const Update = () => {
       });
   }, []);
 
-  const handelSubmit = (data, reset) => {
+  const handelSubmit = async (data, reset) => {
     setIsLoading(true);
-    updatePostById(data, id)
-      .then(() => {
-        reset();
-        setIsLoading(false);
-        navigate("/diaries");
-        dispatch(setTabValue(1));
-      })
-      .catch((error) => {
-        setError(error);
-        setIsLoading(false);
-        throw error;
-      });
+    try {
+      await updatePostById(data, id);
+      reset();
+      setIsLoading(false);
+      dispatch(setTabValue(1));
+      navigate("/diaries");
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+      throw error;
+    }
   };
 
   return (

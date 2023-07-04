@@ -30,7 +30,7 @@ const Diaries = () => {
           {posts &&
             posts.map((post) => (
               <DairyItem
-                key={post._id}
+                key={post.id}
                 post={post}
               />
             ))}

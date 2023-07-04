@@ -33,7 +33,7 @@ const Auth = () => {
       ) : (
         currentUserError && (
           <ErrorModal
-            errorMessage={currentUserError.message}
+            errorMessage={currentUserError}
             resetError={setCurrentUserFailed}
           />
         )

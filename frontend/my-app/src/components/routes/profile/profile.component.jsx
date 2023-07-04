@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../redux-store/user/user.selector";
-import { getUserDetails } from "../../../utils/crud-api-call.utils";
 import { setCurrentUserSuccess } from "../../../redux-store/user/user.action";
 import { setTabValue } from "../../../redux-store/user-interaction/userInteraction.action";
 import { useNavigate } from "react-router-dom";
 import { selectPosts } from "../../../redux-store/posts/posts.selector";
+import { getUserDetails } from "../../../utils/firebase.utils";
 
 import DairyItem from "../../dairy-item/dairy-item.component";
 import Spinner from "../../spinner/spinner.component";
@@ -23,8 +23,8 @@ const Profile = () => {
   useEffect(() => {
     setIsLoading(true);
     getUserDetails(currentUserId)
-      .then((resData) => {
-        setUserDetails(resData.user);
+      .then((user) => {
+        setUserDetails(user);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -34,7 +34,7 @@ const Profile = () => {
   }, []);
 
   const posts = useSelector(selectPosts);
-  const userPosts = posts.filter((post) => post.user === userDetails._id);
+  const userPosts = posts.filter((post) => post.user === currentUserId);
 
   const handelClick = () => {
     dispatch(setCurrentUserSuccess(null));
@@ -64,7 +64,7 @@ const Profile = () => {
           <CardContainer>
             {userPosts.map((post) => (
               <DairyItem
-                key={post._id}
+                key={post.id}
                 post={post}
                 name={userDetails.name}
               />

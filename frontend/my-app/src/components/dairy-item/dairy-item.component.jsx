@@ -1,8 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../redux-store/user/user.selector";
-import { deletePostById } from "../../utils/crud-api-call.utils";
-import { fetchPostsAsync } from "../../redux-store/posts/posts.action";
+import { deletePostById } from "../../utils/firebase.utils";
 
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
@@ -18,10 +17,10 @@ import {
 import { StyledCard, StyledCardActions } from "./dairy-item.style";
 
 const DairyItem = ({ post, name }) => {
-  const { title, description, image, location, date, user, _id } = post;
+  const { title, description, image, location, date, user, id } = post;
+
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
-  const dispatch = useDispatch();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,11 +35,10 @@ const DairyItem = ({ post, name }) => {
     navigate(path);
   };
   const handelDelete = (id) => {
-    deletePostById(id)
-      .then(() => dispatch(fetchPostsAsync()))
-      .catch((error) => {
-        throw error;
-      });
+    deletePostById(currentUser, id).catch((error) => {
+      console.error(error.message);
+      throw error;
+    });
   };
 
   return (
@@ -81,13 +79,13 @@ const DairyItem = ({ post, name }) => {
         <StyledCardActions style={{ textAlign: "right" }}>
           <IconButton
             className="editButton"
-            onClick={() => handelClick(`/post/${_id}`)}
+            onClick={() => handelClick(`/post/${id}`)}
           >
             <ModeEditOutlineIcon />
           </IconButton>
           <IconButton
             className="deleteButton"
-            onClick={() => handelDelete(_id)}
+            onClick={() => handelDelete(id)}
           >
             <DeleteIcon />
           </IconButton>

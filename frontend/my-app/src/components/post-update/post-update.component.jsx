@@ -29,13 +29,10 @@ const PostUpdate = ({ post, update, onSubmit }) => {
     const minimumDate = new Date(1990, 0, 1); // January 1, 1990
     const currentDate = new Date();
 
-    if (selectedDate < minimumDate) {
+    if (selectedDate < minimumDate)
       return "Date must be on or after 1990-01-01";
-    }
 
-    if (selectedDate > currentDate) {
-      return "Date cannot be in the future";
-    }
+    if (selectedDate > currentDate) return "Date cannot be in the future";
 
     return true; // Validation passed
   };

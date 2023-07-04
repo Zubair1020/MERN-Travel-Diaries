@@ -4,6 +4,7 @@ const POSTS_INITIAL_STATE = {
   posts: [],
   isLoading: false,
   error: null,
+  unsubscribe: null,
 };
 
 export const postsReducer = (
@@ -17,6 +18,8 @@ export const postsReducer = (
       return { ...state, posts: payload, isLoading: false };
     case POSTS_ACTION_TYPES.FETCH_POSTS_FAILED:
       return { ...state, error: payload, isLoading: false };
+    case POSTS_ACTION_TYPES.UNSUBSCRIBE_POSTS:
+      return { ...state, unsubscribe: payload };
     default:
       return state;
   }
